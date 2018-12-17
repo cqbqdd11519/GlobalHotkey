@@ -1,0 +1,8 @@
+D:\CSProject\FoobarControl\FoobarControlForm\FoobarControlForm\bin\Debug\FoobarControlForm.exe.config
+D:\CSProject\FoobarControl\FoobarControlForm\FoobarControlForm\bin\Debug\FoobarControlForm.exe
+D:\CSProject\FoobarControl\FoobarControlForm\FoobarControlForm\bin\Debug\FoobarControlForm.pdb
+D:\CSProject\FoobarControl\FoobarControlForm\FoobarControlForm\obj\Debug\FoobarControlForm.csprojResolveAssemblyReference.cache
+D:\CSProject\FoobarControl\FoobarControlForm\FoobarControlForm\obj\Debug\FoobarControlForm.Properties.Resources.resources
+D:\CSProject\FoobarControl\FoobarControlForm\FoobarControlForm\obj\Debug\FoobarControlForm.csproj.GenerateResource.Cache
+D:\CSProject\FoobarControl\FoobarControlForm\FoobarControlForm\obj\Debug\FoobarControlForm.exe
+D:\CSProject\FoobarControl\FoobarControlForm\FoobarControlForm\obj\Debug\FoobarControlForm.pdb
