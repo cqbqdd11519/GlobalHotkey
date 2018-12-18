@@ -8,8 +8,6 @@ namespace GlobalHotKey
 {
     class InterceptKeys
     {
-        public static bool enableKeyHook = true;
-
         private const int WH_KEYBOARD_LL = 13;
         private const int WM_KEYDOWN = 0x0100;
         private const int WM_KEYUP = 0x0101;
@@ -17,6 +15,8 @@ namespace GlobalHotKey
         private const int WM_SYSKEYUP = 0x0105;
         private static LowLevelKeyboardProc _proc = HookCallback;
         private static IntPtr _hookID = IntPtr.Zero;
+
+        public static bool enableKeyHook { get; set; } = true ;
         private static KeyPair pressedKeys = new KeyPair();
 
         public static KeyPair getPressedKeys() {
@@ -77,7 +77,8 @@ namespace GlobalHotKey
             {
                 int vkCode = Marshal.ReadInt32(lParam);
 
-                if(!pressedKeys.Contains((Keys)vkCode))
+                //FixMe : Kanamode & Hanjamode doesn't call KEYUP event
+                if(!pressedKeys.Contains((Keys)vkCode) && (Keys)vkCode != Keys.KanaMode && (Keys)vkCode != Keys.HanjaMode)
                     pressedKeys.Add((Keys)vkCode);
                 findAndCall(pressedKeys);
             }
