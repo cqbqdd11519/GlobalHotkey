@@ -23,20 +23,10 @@ namespace GlobalHotKey
                     key_pairs.Add((Keys)key);
                 }
                 ConfigClass.CommandType _type;
-                if (Enum.TryParse<ConfigClass.CommandType>(obj["type"].ToString(), out _type))
+                if (!Enum.TryParse(obj["type"].ToString(), out _type))
                     continue;
                 hotKeys.Add(key_pairs.GetHashCode(), new ConfigClass(obj["name"].ToString(), key_pairs, _type
                     , obj["exe_file"].ToString(), obj["exe_arg"].ToString(), (Keys)((int)obj["target_key"]), obj["cmd_line"].ToString()));
-            }
-
-            if (true) {
-                addHotKey("Foobar Show", new[] { Keys.LControlKey, Keys.LMenu, Keys.A }, ConfigClass.CommandType.EXE, @"D:\foobar2000\foobar2000.exe", "/show", 0,null);
-                addHotKey("Foobar Pause", new[] { Keys.LControlKey, Keys.LMenu, Keys.Oem7 }, ConfigClass.CommandType.EXE, @"D:\foobar2000\foobar2000.exe", "/pause", 0, null);
-                addHotKey("Foobar Prev", new[] { Keys.LControlKey, Keys.LMenu, Keys.OemOpenBrackets }, ConfigClass.CommandType.EXE, @"D:\foobar2000\foobar2000.exe", "/prev", 0, null);
-                addHotKey("Foobar Next", new[] { Keys.LControlKey, Keys.LMenu, Keys.Oem6 }, ConfigClass.CommandType.EXE, @"D:\foobar2000\foobar2000.exe", "/next", 0, null);
-                addHotKey("Volume Up", new[] { Keys.LControlKey, Keys.LMenu, Keys.Oemplus }, ConfigClass.CommandType.KEY, null, null, Keys.VolumeUp, null);
-                addHotKey("Volume Down", new[] { Keys.LControlKey, Keys.LMenu, Keys.OemMinus }, ConfigClass.CommandType.KEY, null, null, Keys.VolumeDown, null);
-                addHotKey("Volume Mute", new[] { Keys.LControlKey, Keys.LMenu, Keys.Oem5 }, ConfigClass.CommandType.KEY, null, null, Keys.VolumeMute, null);
             }
         }
 

@@ -7,10 +7,18 @@ namespace GlobalHotKey
     using HotKeyDict = Dictionary<int, ConfigClass>;
     public partial class ConfigForm : Form
     {
+        private static ConfigForm openForm = null;
 
         private HotKeyDict hotKeys = new HotKeyDict();
-
         private List<ConfigClass> configList = new List<ConfigClass>();
+
+        public static ConfigForm GetInstance() {
+            if (openForm == null) {
+                openForm = new ConfigForm();
+                openForm.FormClosed += delegate { openForm = null; };
+            }
+            return openForm;
+        }
         public ConfigForm()
         {
             InitializeComponent();
@@ -45,6 +53,7 @@ namespace GlobalHotKey
                 return;
             hotKeys.Add(val.getKeyPairs().GetHashCode(),val);
             addViewItem(val);
+            btnApply.Enabled = true;
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
@@ -59,6 +68,7 @@ namespace GlobalHotKey
             hotKeys.Add(val.getKeyPairs().GetHashCode(), val);
             keysListView.Items.Remove(keysListView.SelectedItems[0]);
             addViewItem(val);
+            btnApply.Enabled = true;
         }
 
         private void addViewItem(ConfigClass val)
@@ -74,17 +84,18 @@ namespace GlobalHotKey
             ListViewItem item = keysListView.SelectedItems[0];
             hotKeys.Remove(item.ImageIndex);
             keysListView.Items.Remove(item);
+            btnApply.Enabled = true;
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            this.Hide();
+            Close();
         }
 
         private void btnApply_Click(object sender, EventArgs e)
         {
             HotKeyManager.setHotKeys(hotKeys);
-            this.Hide();
+            btnApply.Enabled = false;
         }
 
         private void keysListView_SelectedIndexChanged(object sender, EventArgs e)
@@ -98,6 +109,12 @@ namespace GlobalHotKey
                 btnEdit.Enabled = false;
                 btnDelete.Enabled = false;
             }
+        }
+
+        private void okBtn_Click(object sender, EventArgs e)
+        {
+            HotKeyManager.setHotKeys(hotKeys);
+            Close();
         }
     }
 }

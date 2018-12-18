@@ -94,7 +94,7 @@ namespace GlobalHotKey
 
         private void hideDialog() {
             InterceptKeys.enableKeyHook = true;
-            Hide();
+            Close();
         }
 
         private void typeView_SelectedIndexChanged(object sender, EventArgs e)
@@ -157,7 +157,7 @@ namespace GlobalHotKey
         {
             if (e.CloseReason == CloseReason.UserClosing)
             {
-                hideDialog();
+                InterceptKeys.enableKeyHook = true;
             }
         }
 

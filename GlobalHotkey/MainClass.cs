@@ -1,24 +1,34 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.Threading;
 using System.Runtime.InteropServices;
 
 namespace GlobalHotKey
 {
     class MainClass
     {
+        private static string appGuid = "f64974de-8973-42e4-8912-8687bb7d5a1b";
+
         [STAThread]
         public static void Main()
         {
-            initNotifyIcon();
+            using (Mutex mutex = new Mutex(false, "Global\\" + appGuid))
+            {
+                if (!mutex.WaitOne(0, false)){
+                    MessageBox.Show("Instance already running");
+                    return;
+                }
+                initNotifyIcon();
 
-            HotKeyManager.parseHotKeys();
-            InterceptKeys.initKeyHook();
+                HotKeyManager.parseHotKeys();
+                InterceptKeys.initKeyHook();
 
-            Application.EnableVisualStyles();
-            Application.Run();
+                Application.EnableVisualStyles();
+                Application.Run();
 
-            InterceptKeys.terminateKeyHook();
+                InterceptKeys.terminateKeyHook();
+            }
         }
 
         private static void initNotifyIcon()
@@ -37,8 +47,9 @@ namespace GlobalHotKey
 
         private static void configClicked(object sender, EventArgs e)
         {
-            ConfigForm cForm = new ConfigForm();
+            ConfigForm cForm = ConfigForm.GetInstance();
             cForm.Show();
+            cForm.BringToFront();
         }
         private static void exitClicked(object sender, EventArgs e)
         {
