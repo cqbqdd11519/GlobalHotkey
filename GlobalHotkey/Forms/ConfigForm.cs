@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Text;
 using System.Windows.Forms;
 using System.Collections.Generic;
 
@@ -38,9 +40,9 @@ namespace GlobalHotKey
 
         private void loadHotKeys() {
             hotKeys = new HotKeyDict(HotKeyManager.getHotKeys());
+            keysListView.Items.Clear();
             foreach (KeyValuePair<int, ConfigClass> obj in hotKeys) {
-                ConfigClass val = obj.Value;
-                addViewItem(val);
+                addViewItem(obj.Value);
             }
         }
 
@@ -115,6 +117,38 @@ namespace GlobalHotKey
         {
             HotKeyManager.setHotKeys(hotKeys);
             Close();
+        }
+
+        private void btnBackup_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.Title = "Save a Configuration Backup File";
+            saveFileDialog1.Filter = "JSON Files|*.json";
+            saveFileDialog1.ShowDialog();
+            if (saveFileDialog1.FileName != "")
+            {
+                string backup_str = Properties.Settings.Default.HotKeys;
+                byte[] backup_byte = new UTF8Encoding(true).GetBytes(backup_str);
+                FileStream fs = (FileStream)saveFileDialog1.OpenFile();
+                fs.Write(backup_byte,0,backup_byte.Length);
+                fs.Close();
+            }
+        }
+
+        private void btnRestore_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.Title = "Select a Configuration Backup File";
+            openFileDialog1.Filter = "JSON Files|*.json";
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                StreamReader sr = new StreamReader(openFileDialog1.FileName);
+                Properties.Settings.Default.HotKeys = sr.ReadToEnd();
+                sr.Close();
+                Properties.Settings.Default.Save();
+                HotKeyManager.parseHotKeys();
+                loadHotKeys();
+            }
         }
     }
 }
