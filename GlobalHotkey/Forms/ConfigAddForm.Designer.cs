@@ -35,16 +35,18 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.typeView = new System.Windows.Forms.ComboBox();
-            this.cmdFileView = new System.Windows.Forms.TextBox();
-            this.cmdFileLabel = new System.Windows.Forms.Label();
+            this.exeFileView = new System.Windows.Forms.TextBox();
+            this.exeFileLabel = new System.Windows.Forms.Label();
             this.btnBrowse = new System.Windows.Forms.Button();
-            this.cmdArgView = new System.Windows.Forms.TextBox();
-            this.cmdArgLabel = new System.Windows.Forms.Label();
+            this.exeArgView = new System.Windows.Forms.TextBox();
+            this.exeArgLabel = new System.Windows.Forms.Label();
             this.okBtn = new System.Windows.Forms.Button();
             this.cancelBtn = new System.Windows.Forms.Button();
             this.cmdFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.targetKeyLabel = new System.Windows.Forms.Label();
             this.targetKeyView = new System.Windows.Forms.TextBox();
+            this.cmdLineView = new System.Windows.Forms.TextBox();
+            this.cmdLineLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -100,33 +102,34 @@
             this.typeView.FormattingEnabled = true;
             this.typeView.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.typeView.Items.AddRange(new object[] {
-            "Command",
-            "Key Input"});
+            "File Execution",
+            "Key Input",
+            "Command"});
             this.typeView.Location = new System.Drawing.Point(135, 87);
             this.typeView.Name = "typeView";
             this.typeView.Size = new System.Drawing.Size(336, 20);
             this.typeView.TabIndex = 5;
             this.typeView.SelectedIndexChanged += new System.EventHandler(this.typeView_SelectedIndexChanged);
             // 
-            // cmdFileView
+            // exeFileView
             // 
-            this.cmdFileView.Location = new System.Drawing.Point(135, 120);
-            this.cmdFileView.Name = "cmdFileView";
-            this.cmdFileView.ReadOnly = true;
-            this.cmdFileView.Size = new System.Drawing.Size(257, 21);
-            this.cmdFileView.TabIndex = 7;
-            this.cmdFileView.Visible = false;
+            this.exeFileView.Location = new System.Drawing.Point(135, 120);
+            this.exeFileView.Name = "exeFileView";
+            this.exeFileView.ReadOnly = true;
+            this.exeFileView.Size = new System.Drawing.Size(257, 21);
+            this.exeFileView.TabIndex = 7;
+            this.exeFileView.Visible = false;
             // 
-            // cmdFileLabel
+            // exeFileLabel
             // 
-            this.cmdFileLabel.AutoSize = true;
-            this.cmdFileLabel.Font = new System.Drawing.Font("굴림", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.cmdFileLabel.Location = new System.Drawing.Point(13, 125);
-            this.cmdFileLabel.Name = "cmdFileLabel";
-            this.cmdFileLabel.Size = new System.Drawing.Size(34, 19);
-            this.cmdFileLabel.TabIndex = 6;
-            this.cmdFileLabel.Text = "File";
-            this.cmdFileLabel.Visible = false;
+            this.exeFileLabel.AutoSize = true;
+            this.exeFileLabel.Font = new System.Drawing.Font("굴림", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.exeFileLabel.Location = new System.Drawing.Point(13, 125);
+            this.exeFileLabel.Name = "exeFileLabel";
+            this.exeFileLabel.Size = new System.Drawing.Size(34, 19);
+            this.exeFileLabel.TabIndex = 6;
+            this.exeFileLabel.Text = "File";
+            this.exeFileLabel.Visible = false;
             // 
             // btnBrowse
             // 
@@ -139,24 +142,24 @@
             this.btnBrowse.Visible = false;
             this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
             // 
-            // cmdArgView
+            // exeArgView
             // 
-            this.cmdArgView.Location = new System.Drawing.Point(135, 158);
-            this.cmdArgView.Name = "cmdArgView";
-            this.cmdArgView.Size = new System.Drawing.Size(336, 21);
-            this.cmdArgView.TabIndex = 10;
-            this.cmdArgView.Visible = false;
+            this.exeArgView.Location = new System.Drawing.Point(135, 158);
+            this.exeArgView.Name = "exeArgView";
+            this.exeArgView.Size = new System.Drawing.Size(336, 21);
+            this.exeArgView.TabIndex = 10;
+            this.exeArgView.Visible = false;
             // 
-            // cmdArgLabel
+            // exeArgLabel
             // 
-            this.cmdArgLabel.AutoSize = true;
-            this.cmdArgLabel.Font = new System.Drawing.Font("굴림", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.cmdArgLabel.Location = new System.Drawing.Point(14, 161);
-            this.cmdArgLabel.Name = "cmdArgLabel";
-            this.cmdArgLabel.Size = new System.Drawing.Size(97, 19);
-            this.cmdArgLabel.TabIndex = 9;
-            this.cmdArgLabel.Text = "Arguments";
-            this.cmdArgLabel.Visible = false;
+            this.exeArgLabel.AutoSize = true;
+            this.exeArgLabel.Font = new System.Drawing.Font("굴림", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.exeArgLabel.Location = new System.Drawing.Point(14, 161);
+            this.exeArgLabel.Name = "exeArgLabel";
+            this.exeArgLabel.Size = new System.Drawing.Size(97, 19);
+            this.exeArgLabel.TabIndex = 9;
+            this.exeArgLabel.Text = "Arguments";
+            this.exeArgLabel.Visible = false;
             // 
             // okBtn
             // 
@@ -178,10 +181,6 @@
             this.cancelBtn.UseVisualStyleBackColor = true;
             this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
             // 
-            // cmdFileDialog
-            // 
-            this.cmdFileDialog.FileName = "cmdFileDialog";
-            // 
             // targetKeyLabel
             // 
             this.targetKeyLabel.AutoSize = true;
@@ -201,20 +200,41 @@
             this.targetKeyView.TabIndex = 14;
             this.targetKeyView.Visible = false;
             // 
+            // cmdLineView
+            // 
+            this.cmdLineView.Location = new System.Drawing.Point(135, 120);
+            this.cmdLineView.Name = "cmdLineView";
+            this.cmdLineView.Size = new System.Drawing.Size(336, 21);
+            this.cmdLineView.TabIndex = 16;
+            this.cmdLineView.Visible = false;
+            // 
+            // cmdLineLabel
+            // 
+            this.cmdLineLabel.AutoSize = true;
+            this.cmdLineLabel.Font = new System.Drawing.Font("굴림", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cmdLineLabel.Location = new System.Drawing.Point(14, 125);
+            this.cmdLineLabel.Name = "cmdLineLabel";
+            this.cmdLineLabel.Size = new System.Drawing.Size(92, 19);
+            this.cmdLineLabel.TabIndex = 15;
+            this.cmdLineLabel.Text = "Key Event";
+            this.cmdLineLabel.Visible = false;
+            // 
             // ConfigAddForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(483, 261);
+            this.Controls.Add(this.cmdLineView);
+            this.Controls.Add(this.cmdLineLabel);
             this.Controls.Add(this.targetKeyView);
             this.Controls.Add(this.targetKeyLabel);
             this.Controls.Add(this.cancelBtn);
             this.Controls.Add(this.okBtn);
-            this.Controls.Add(this.cmdArgView);
-            this.Controls.Add(this.cmdArgLabel);
+            this.Controls.Add(this.exeArgView);
+            this.Controls.Add(this.exeArgLabel);
             this.Controls.Add(this.btnBrowse);
-            this.Controls.Add(this.cmdFileView);
-            this.Controls.Add(this.cmdFileLabel);
+            this.Controls.Add(this.exeFileView);
+            this.Controls.Add(this.exeFileLabel);
             this.Controls.Add(this.typeView);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.keysView);
@@ -240,15 +260,17 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox typeView;
-        private System.Windows.Forms.TextBox cmdFileView;
-        private System.Windows.Forms.Label cmdFileLabel;
+        private System.Windows.Forms.TextBox exeFileView;
+        private System.Windows.Forms.Label exeFileLabel;
         private System.Windows.Forms.Button btnBrowse;
-        private System.Windows.Forms.TextBox cmdArgView;
-        private System.Windows.Forms.Label cmdArgLabel;
+        private System.Windows.Forms.TextBox exeArgView;
+        private System.Windows.Forms.Label exeArgLabel;
         private System.Windows.Forms.Button okBtn;
         private System.Windows.Forms.Button cancelBtn;
         private System.Windows.Forms.OpenFileDialog cmdFileDialog;
         private System.Windows.Forms.Label targetKeyLabel;
         private System.Windows.Forms.TextBox targetKeyView;
+        private System.Windows.Forms.TextBox cmdLineView;
+        private System.Windows.Forms.Label cmdLineLabel;
     }
 }

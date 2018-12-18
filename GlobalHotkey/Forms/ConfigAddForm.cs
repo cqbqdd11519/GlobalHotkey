@@ -20,9 +20,6 @@ namespace GlobalHotKey
 
         public ConfigAddForm()
         {
-            Console.WriteLine((int)Keys.LControlKey);
-            Console.WriteLine((int)Keys.ControlKey);
-            Console.WriteLine((int)Keys.RControlKey);
             InitializeComponent();
 
             InterceptKeys.enableKeyHook = false;
@@ -37,16 +34,28 @@ namespace GlobalHotKey
 
             nameView.Text = config.getName();
             keysView.Text = string.Join("+",config.getKeyPairs());
-            bool isCMD = config.getType() == ConfigClass.CommandType.CMD;
-            typeView.SelectedIndex = isCMD ? 0 : 1;
-            if (isCMD)
-            {
-                cmdFileView.Text = config.getCmdFile();
-                cmdArgView.Text = config.getCmdArg();
-            }
-            else
-            {
-                targetKeyView.Text = config.getTargetKey().ToString();
+            switch (config.getType()) {
+                case ConfigClass.CommandType.EXE:
+                    {
+                        typeView.SelectedIndex = 0;
+                        exeFileView.Text = config.getExeFile();
+                        exeArgView.Text = config.getExeArg();
+                        break;
+                    }
+                case ConfigClass.CommandType.KEY:
+                    {
+                        typeView.SelectedIndex = 1;
+                        targetKeyView.Text = config.getTargetKey().ToString();
+                        break;
+                    }
+                case ConfigClass.CommandType.CMD:
+                    {
+                        typeView.SelectedIndex = 2;
+                        cmdLineView.Text = config.getCmdLine();
+                        break;
+                    }
+                default:
+                    break;
             }
 
             keysSaved = new KeyPair(_config.getKeyPairs());
@@ -58,7 +67,7 @@ namespace GlobalHotKey
             if (result == DialogResult.OK)
             {
                 string file = cmdFileDialog.FileName;
-                cmdFileView.Text = file;
+                exeFileView.Text = file;
             }
         }
 
@@ -70,13 +79,16 @@ namespace GlobalHotKey
         private void okBtn_Click(object sender, EventArgs e)
         {
             if (nameView.Text == "" || keysSaved.Count < 1 || typeView.SelectedIndex < 0 || 
-                (typeView.SelectedIndex == 0 && cmdFileView.Text == "") ||
-                (typeView.SelectedIndex == 1 && targetKey == 0)) {
+                (typeView.SelectedIndex == 0 && exeFileView.Text == "") ||
+                (typeView.SelectedIndex == 1 && !Enum.TryParse<Keys>(targetKeyView.Text,out targetKey)) ||
+                (typeView.SelectedIndex == 2 && cmdLineView.Text == "")) {
                 MessageBox.Show("You need to set every fields", "Error");
                 return;
             }
-            config = new ConfigClass(nameView.Text,keysSaved,typeView.SelectedIndex == 0 ? ConfigClass.CommandType.CMD : ConfigClass.CommandType.KEY,
-                cmdFileView.Text,cmdArgView.Text,targetKey);
+            config = new ConfigClass(nameView.Text,keysSaved
+                ,typeView.SelectedIndex == 0 ? ConfigClass.CommandType.EXE
+                : typeView.SelectedIndex == 1 ? ConfigClass.CommandType.KEY : ConfigClass.CommandType.CMD,
+                exeFileView.Text,exeArgView.Text,targetKey,cmdLineView.Text);
             hideDialog();
         }
 
@@ -87,28 +99,57 @@ namespace GlobalHotKey
 
         private void typeView_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (typeView.SelectedIndex == 0)
-            {
-                cmdFileLabel.Visible = true;
-                cmdFileView.Visible = true;
-                btnBrowse.Visible = true;
+            switch (typeView.SelectedIndex) {
+                case 0:
+                    {
+                        exeFileLabel.Visible = true;
+                        exeFileView.Visible = true;
+                        btnBrowse.Visible = true;
 
-                cmdArgLabel.Visible = true;
-                cmdArgView.Visible = true;
+                        exeArgLabel.Visible = true;
+                        exeArgView.Visible = true;
 
-                targetKeyLabel.Visible = false;
-                targetKeyView.Visible = false;
-            }
-            else if (typeView.SelectedIndex == 1) {
-                cmdFileLabel.Visible = false;
-                cmdFileView.Visible = false;
-                btnBrowse.Visible = false;
+                        targetKeyLabel.Visible = false;
+                        targetKeyView.Visible = false;
 
-                cmdArgLabel.Visible = false;
-                cmdArgView.Visible = false;
+                        cmdLineLabel.Visible = false;
+                        cmdLineView.Visible = false;
+                        break;
+                    }
+                case 1:
+                    {
+                        exeFileLabel.Visible = false;
+                        exeFileView.Visible = false;
+                        btnBrowse.Visible = false;
 
-                targetKeyLabel.Visible = true;
-                targetKeyView.Visible = true;
+                        exeArgLabel.Visible = false;
+                        exeArgView.Visible = false;
+
+                        targetKeyLabel.Visible = true;
+                        targetKeyView.Visible = true;
+
+                        cmdLineLabel.Visible = false;
+                        cmdLineView.Visible = false;
+                        break;
+                    }
+                case 2:
+                    {
+                        exeFileLabel.Visible = false;
+                        exeFileView.Visible = false;
+                        btnBrowse.Visible = false;
+
+                        exeArgLabel.Visible = false;
+                        exeArgView.Visible = false;
+
+                        targetKeyLabel.Visible = false;
+                        targetKeyView.Visible = false;
+
+                        cmdLineLabel.Visible = true;
+                        cmdLineView.Visible = true;
+                        break;
+                    }
+                default:
+                    break;
             }
         }
 

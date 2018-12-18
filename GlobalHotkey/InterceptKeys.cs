@@ -39,13 +39,21 @@ namespace GlobalHotKey
             if (!HotKeyManager.getHotKeys().ContainsKey(keypair.GetHashCode()))
                 return;
             ConfigClass cl = HotKeyManager.getHotKeys()[keypair.GetHashCode()];
-            if (cl.getType() == ConfigClass.CommandType.CMD)
-            {
-                CallProcess(cl.getCmdFile(),cl.getCmdArg());
-            }
-            else if(cl.getType() == ConfigClass.CommandType.KEY){
-                keybd_event((byte)cl.getTargetKey(), 0, 0x0001, 0); //Key Down
-                keybd_event((byte)cl.getTargetKey(), 0, 0x0002, 0); //Key Up
+            switch (cl.getType()) {
+                case ConfigClass.CommandType.EXE:
+                    CallProcess(cl.getExeFile(), cl.getExeArg());
+                    break;
+                case ConfigClass.CommandType.KEY:
+                    {
+                        keybd_event((byte)cl.getTargetKey(), 0, 0x0001, 0); //Key Down
+                        keybd_event((byte)cl.getTargetKey(), 0, 0x0002, 0); //Key Up
+                        break;
+                    }
+                case ConfigClass.CommandType.CMD:
+                    CallCommand(cl.getCmdLine());
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -57,7 +65,12 @@ namespace GlobalHotKey
             Process proc = new Process();
             proc.StartInfo.FileName = name;
             proc.StartInfo.Arguments = args;
+            proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             proc.Start();
+        }
+        
+        private static void CallCommand(string cmd) {
+            CallProcess(@"C:\Windows\System32\cmd.exe","/c "+cmd);
         }
 
         private static IntPtr SetHook(LowLevelKeyboardProc proc)

@@ -32,9 +32,7 @@ namespace GlobalHotKey
             hotKeys = new HotKeyDict(HotKeyManager.getHotKeys());
             foreach (KeyValuePair<int, ConfigClass> obj in hotKeys) {
                 ConfigClass val = obj.Value;
-                string keys_str = string.Join("+",val.getKeyPairs());
-                keysListView.Items.Add(new ListViewItem(new[] { val.getName(), keys_str, val.getType()==ConfigClass.CommandType.CMD?"CMD":"KEY"
-                    , val.getType()==ConfigClass.CommandType.CMD?val.getCmdFile()+" "+val.getCmdArg():val.getTargetKey().ToString()},obj.Key));
+                addViewItem(val);
             }
         }
 
@@ -46,9 +44,7 @@ namespace GlobalHotKey
             if (val == null)
                 return;
             hotKeys.Add(val.getKeyPairs().GetHashCode(),val);
-            string keys_str = string.Join("+", val.getKeyPairs());
-            keysListView.Items.Add(new ListViewItem(new[] { val.getName(), keys_str, val.getType()==ConfigClass.CommandType.CMD?"CMD":"KEY"
-                    , val.getType()==ConfigClass.CommandType.CMD?val.getCmdFile()+" "+val.getCmdArg():val.getTargetKey().ToString()}, val.getKeyPairs().GetHashCode()));
+            addViewItem(val);
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
@@ -61,10 +57,16 @@ namespace GlobalHotKey
                 return;
             hotKeys.Remove(idx);
             hotKeys.Add(val.getKeyPairs().GetHashCode(), val);
-            string keys_str = string.Join("+", val.getKeyPairs());
             keysListView.Items.Remove(keysListView.SelectedItems[0]);
-            keysListView.Items.Add(new ListViewItem(new[] { val.getName(), keys_str, val.getType()==ConfigClass.CommandType.CMD?"CMD":"KEY"
-                    , val.getType()==ConfigClass.CommandType.CMD?val.getCmdFile()+" "+val.getCmdArg():val.getTargetKey().ToString()}, val.getKeyPairs().GetHashCode()));
+            addViewItem(val);
+        }
+
+        private void addViewItem(ConfigClass val)
+        {
+            keysListView.Items.Add(new ListViewItem(new[] { val.getName(), string.Join("+", val.getKeyPairs())
+                , val.getType().ToString()
+                , val.getType()==ConfigClass.CommandType.EXE ? val.getExeFile()+" "+val.getExeArg()
+                :val.getType()==ConfigClass.CommandType.KEY ? val.getTargetKey().ToString() : val.getCmdLine()}, val.getKeyPairs().GetHashCode()));
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
