@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.Windows.Input;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 
@@ -36,6 +37,11 @@ namespace GlobalHotKey
         {
             if (!enableKeyHook)
                 return;
+            Console.Write("== ");
+            foreach (Keys key in keypair) {
+                Console.Write(key+" | ");
+            }
+            Console.Write("\n");
             if (!HotKeyManager.getHotKeys().ContainsKey(keypair.GetHashCode()))
                 return;
             ConfigClass cl = HotKeyManager.getHotKeys()[keypair.GetHashCode()];
@@ -90,8 +96,16 @@ namespace GlobalHotKey
             {
                 int vkCode = Marshal.ReadInt32(lParam);
 
-                //FixMe : Kanamode & Hanjamode doesn't call KEYUP event
-                if(!pressedKeys.Contains((Keys)vkCode) && (Keys)vkCode != Keys.KanaMode && (Keys)vkCode != Keys.HanjaMode)
+                KeyPair tmpPair = new KeyPair();
+                foreach(Keys vKey in pressedKeys) {
+                    Key key = KeyInterop.KeyFromVirtualKey((int)vKey);
+                    if (!Keyboard.IsKeyDown(key))
+                        tmpPair.Add(vKey);
+                }
+                foreach (Keys vKey in tmpPair) {
+                    pressedKeys.Remove(vKey);
+                }
+                if(!pressedKeys.Contains((Keys)vkCode))
                     pressedKeys.Add((Keys)vkCode);
                 findAndCall(pressedKeys);
             }
@@ -116,6 +130,5 @@ namespace GlobalHotKey
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
 
         private static extern IntPtr GetModuleHandle(string lpModuleName);
-
     }
 }
