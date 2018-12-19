@@ -37,11 +37,6 @@ namespace GlobalHotKey
         {
             if (!enableKeyHook)
                 return;
-            Console.Write("== ");
-            foreach (Keys key in keypair) {
-                Console.Write(key+" | ");
-            }
-            Console.Write("\n");
             if (!HotKeyManager.getHotKeys().ContainsKey(keypair.GetHashCode()))
                 return;
             ConfigClass cl = HotKeyManager.getHotKeys()[keypair.GetHashCode()];
@@ -105,7 +100,10 @@ namespace GlobalHotKey
                 foreach (Keys vKey in tmpPair) {
                     pressedKeys.Remove(vKey);
                 }
-                if(!pressedKeys.Contains((Keys)vkCode))
+                
+                if(!pressedKeys.Contains((Keys)vkCode)
+                    && (Keys)vkCode != Keys.KanaMode && (Keys)vkCode != Keys.HangulMode && (Keys)vkCode != Keys.JunjaMode
+                    && (Keys)vkCode != Keys.FinalMode && (Keys)vkCode != Keys.HanjaMode)
                     pressedKeys.Add((Keys)vkCode);
                 findAndCall(pressedKeys);
             }
