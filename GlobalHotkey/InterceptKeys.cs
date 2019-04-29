@@ -63,6 +63,8 @@ namespace GlobalHotKey
 
         private static void CallProcess(string name, string args)
         {
+            if (!System.IO.File.Exists(name))
+                return;
             Process proc = new Process();
             proc.StartInfo.FileName = name;
             proc.StartInfo.Arguments = args;
