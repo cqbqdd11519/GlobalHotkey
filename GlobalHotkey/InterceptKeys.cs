@@ -96,7 +96,7 @@ namespace GlobalHotKey
                 KeyPair tmpPair = new KeyPair();
                 foreach(Keys vKey in pressedKeys) {
                     Key key = KeyInterop.KeyFromVirtualKey((int)vKey);
-                    if (!Keyboard.IsKeyDown(key))
+                    if (Enum.IsDefined(typeof(Key),key) && !Keyboard.IsKeyDown(key))
                         tmpPair.Add(vKey);
                 }
                 foreach (Keys vKey in tmpPair) {
